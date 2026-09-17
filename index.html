@@ -4,43 +4,81 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hoera! Xavier wordt 10! 🥳</title>
-
   <meta property="og:title" content="Hoera! Xavier wordt 10! 🥳">
   <meta property="og:description" content="Kom je op mijn feestje?">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://roydenouter.github.io/xavier-wordt-10/">
   <meta property="og:image" content="https://roydenouter.github.io/xavier-wordt-10/Xavier.jpg">
   <meta property="og:image:alt" content="Uitnodiging voor Xaviers tiende verjaardag">
-
   <meta name="twitter:card" content="summary_large_image">
-
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #0d8ed0;
-      font-family: system-ui, sans-serif;
-    }
-    a { display: block; }
-    img {
-      display: block;
-      width: min(100%, 1536px);
-      max-height: 100vh;
-      object-fit: contain;
-    }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; overflow:hidden; display:grid; place-items:center; background:linear-gradient(135deg,#00a7e8,#005c9d); font-family:system-ui,sans-serif; }
+    #stage { position:relative; width:min(100vw,900px); height:100vh; display:grid; place-items:center; cursor:pointer; }
+    #foto { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 12px 25px #003a6088); }
+    .tekst { position:absolute; top:5%; width:100%; padding:0 18px; text-align:center; color:white; font-size:clamp(1.15rem,3vw,1.8rem); font-weight:900; text-shadow:0 2px 7px #003c67; }
+    #leeftijd { position:absolute; right:5%; bottom:6%; width:clamp(125px,28vw,220px); aspect-ratio:1; display:grid; place-items:center; border:7px solid white; border-radius:50%; background:conic-gradient(#ffdd2d 0 25%,#ff5c7e 0 50%,#45d9bd 0 75%,#8d68f5 0); color:white; font-size:clamp(5rem,17vw,9rem); font-weight:1000; line-height:1; text-shadow:0 4px 0 #005a91; box-shadow:0 10px 0 #006295,0 18px 30px #003b6288; opacity:0; transform:rotate(-8deg); } #leeftijd::before { content:"★  ★  ★"; position:absolute; top:10%; font-size:clamp(.65rem,2vw,1rem); letter-spacing:4px; color:white; }
+    .pop { animation:pop .55s both; }
+    @keyframes pop { from { opacity:0; transform:scale(.35) rotate(-22deg); } 70% { opacity:1; transform:scale(1.12) rotate(6deg); } to { opacity:1; transform:scale(1) rotate(-8deg); } }
+    .confetti { position:absolute; width:11px; height:17px; background:var(--kleur); animation:regen 2.6s linear infinite; }
+    @keyframes regen { from { transform:translateY(-15vh) rotate(0); } to { transform:translateY(120vh) rotate(720deg); } }
   </style>
 </head>
 <body>
-  <a href="https://www.lijstje.nl/Xaviertien" aria-label="Open Xaviers verlanglijstje">
-    <img src="Xavier.jpg" alt="Hoera, Xavier wordt 10! Kom je op mijn feestje?">
-  </a>
-
+  <main id="stage" role="button" aria-label="Start Xaviers tijdlijn">
+    <img id="foto" src="Xavier.jpg" alt="Xaviers uitnodiging">
+    <div id="tekst" class="tekst">Tik op de kaart voor een reis door de tijd…</div>
+    <div id="leeftijd"></div>
+  </main>
   <script>
-    setTimeout(() => {
-      window.location.replace("https://www.lijstje.nl/Xaviertien");
-    }, 900);
+    const fotos = ["1.jpg","2.JPG","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","9.jpg"];
+    const stage = document.getElementById("stage");
+    const foto = document.getElementById("foto");
+    const tekst = document.getElementById("tekst");
+    const leeftijd = document.getElementById("leeftijd");
+    let gestart = false;
+
+    function vier() {
+      for (let i = 0; i < 26; i++) {
+        const snipper = document.createElement("i");
+        snipper.className = "confetti";
+        snipper.style.left = Math.random() * 100 + "%";
+        snipper.style.animationDelay = Math.random() * -2.6 + "s";
+        snipper.style.setProperty("--kleur", ["#ffe14a","#ff6080","#49ddbd","#ffffff"][i % 4]);
+        stage.appendChild(snipper);
+      }
+    }
+    function toon(n) {
+      foto.src = fotos[n - 1];
+      foto.alt = "Xavier op " + n + " jaar";
+      tekst.textContent = "Xavier is " + n + " jaar!";
+      leeftijd.textContent = n;
+      foto.className = "pop";
+      leeftijd.className = "pop";
+      setTimeout(() => { foto.className = ""; leeftijd.className = ""; }, 600);
+    }
+    stage.addEventListener("click", () => {
+      if (gestart) return;
+      gestart = true;
+      vier();
+      let n = 1;
+      toon(n);
+      const tijdlijn = setInterval(() => {
+        n += 1;
+        if (n <= 9) {
+          toon(n);
+        } else {
+          clearInterval(tijdlijn);
+          foto.src = "Xavier.jpg";
+          foto.alt = "Hoera, Xavier wordt 10!";
+          tekst.textContent = "HOERA! Xavier wordt 10! 🥳";
+          leeftijd.textContent = "10";
+          foto.className = "pop";
+          leeftijd.className = "pop";
+          setTimeout(() => window.location.replace("https://www.lijstje.nl/Xaviertien"), 3000);
+        }
+      }, 1250);
+    });
   </script>
 </body>
 </html>
