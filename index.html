@@ -18,8 +18,10 @@
     #foto { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 12px 25px #003a6088); }
     .tekst { position:absolute; top:5%; width:100%; padding:0 18px; text-align:center; color:white; font-size:clamp(1.15rem,3vw,1.8rem); font-weight:900; text-shadow:0 2px 7px #003c67; }
     #leeftijd { position:absolute; right:5%; bottom:6%; width:clamp(125px,28vw,220px); aspect-ratio:1; display:grid; place-items:center; border:7px solid white; border-radius:50%; background:conic-gradient(#ffdd2d 0 25%,#ff5c7e 0 50%,#45d9bd 0 75%,#8d68f5 0); color:white; font-size:clamp(5rem,17vw,9rem); font-weight:1000; line-height:1; text-shadow:0 4px 0 #005a91; box-shadow:0 10px 0 #006295,0 18px 30px #003b6288; opacity:0; transform:rotate(-8deg); } #leeftijd::before { content:"★  ★  ★"; position:absolute; top:10%; font-size:clamp(.65rem,2vw,1rem); letter-spacing:4px; color:white; }
-    .pop { animation:pop .55s both; }
-    @keyframes pop { from { opacity:0; transform:scale(.35) rotate(-22deg); } 70% { opacity:1; transform:scale(1.12) rotate(6deg); } to { opacity:1; transform:scale(1) rotate(-8deg); } }
+    .foto-in { animation:fotoIn .65s ease-out both; }
+    .badge-in { animation:badgeIn .55s cubic-bezier(.2,1.5,.4,1) both; }
+    @keyframes fotoIn { from { opacity:0; transform:scale(1.035); } to { opacity:1; transform:scale(1); } }
+    @keyframes badgeIn { from { opacity:0; transform:scale(.45) rotate(-18deg); } 75% { opacity:1; transform:scale(1.08) rotate(-5deg); } to { opacity:1; transform:scale(1) rotate(-8deg); } }
     .confetti { position:absolute; width:11px; height:17px; background:var(--kleur); animation:regen 2.6s linear infinite; }
     @keyframes regen { from { transform:translateY(-15vh) rotate(0); } to { transform:translateY(120vh) rotate(720deg); } }
   </style>
@@ -53,9 +55,11 @@
       foto.alt = "Xavier op " + n + " jaar";
       tekst.textContent = "Xavier is " + n + " jaar!";
       leeftijd.textContent = n;
-      foto.className = "pop";
-      leeftijd.className = "pop";
-      setTimeout(() => { foto.className = ""; leeftijd.className = ""; }, 600);
+      leeftijd.className = "";
+      foto.className = "";
+      void foto.offsetWidth;
+      foto.className = "foto-in";
+      setTimeout(() => { leeftijd.className = "badge-in"; }, 950);
     }
     stage.addEventListener("click", () => {
       if (gestart) return;
@@ -73,11 +77,14 @@
           foto.alt = "Hoera, Xavier wordt 10!";
           tekst.textContent = "HOERA! Xavier wordt 10! 🥳";
           leeftijd.textContent = "10";
-          foto.className = "pop";
-          leeftijd.className = "pop";
+          leeftijd.className = "";
+          foto.className = "";
+          void foto.offsetWidth;
+          foto.className = "foto-in";
+          setTimeout(() => { leeftijd.className = "badge-in"; }, 950);
           setTimeout(() => window.location.replace("https://www.lijstje.nl/Xaviertien"), 3000);
         }
-      }, 1250);
+      }, 2200);
     });
   </script>
 </body>
